@@ -5,11 +5,18 @@
  */
 package chomp;
 
+import static chomp.Client.myTurn;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import static jdk.nashorn.internal.objects.NativeRegExp.global;
 
@@ -21,33 +28,31 @@ import static jdk.nashorn.internal.objects.NativeRegExp.global;
  */
 public class NewJFrame extends javax.swing.JFrame {
 
-        
-    
+    Client c;
 
-protected ImageIcon createIcon(String path) {
-    URL imgURL = NewJFrame.class.getResource(path);
-    if (imgURL != null) {
-        return new ImageIcon(imgURL);
-    } else {
-        System.err.println("File not found " + path);
-        return null;
+    static JTextArea Txtarea;
+  // butonlara icon vermek icin
+    static ImageIcon createIcon(String path) {
+        URL imgURL = NewJFrame.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("File not found " + path);
+            return null;
+        }
     }
-}
-   
-   //JButton[][] a1;
-ImageIcon icon1 = createIcon("bmw.png");
-        ImageIcon icon2 = createIcon("lamborghini.png");
-        ImageIcon icon3 = createIcon("icon3.png");
-    
-   
+// iconlar
+    static ImageIcon icon1 = createIcon("bmw.png");
+    static ImageIcon icon2 = createIcon("lamborghini.png");
+    static ImageIcon icon3 = createIcon("icon3.png");
+
     /**
      * Creates new form NewJFrame
      */
     public NewJFrame() {
-     
-        
-         
         initComponents();
+        jTextField1.setEditable(false);
+        //butonlara icon verdik
         b1.setIcon(icon1);
         b2.setIcon(icon1);
         b3.setIcon(icon1);
@@ -84,10 +89,7 @@ ImageIcon icon1 = createIcon("bmw.png");
         b36.setIcon(icon1);
         b35.setIcon(icon1);
         b34.setIcon(icon1);
-        
-         
-        
-      
+        newGame.setVisible(false);
     }
 
     /**
@@ -137,6 +139,13 @@ ImageIcon icon1 = createIcon("bmw.png");
         b33 = new javax.swing.JButton();
         b32 = new javax.swing.JButton();
         b31 = new javax.swing.JButton();
+        TextIP = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        TextPort = new javax.swing.JTextField();
+        BtnBaglan = new javax.swing.JButton();
+        newGame = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -368,6 +377,30 @@ ImageIcon icon1 = createIcon("bmw.png");
             }
         });
 
+        jLabel1.setText("IP");
+
+        jLabel2.setText("Port");
+
+        BtnBaglan.setText("Baglan");
+        BtnBaglan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBaglanActionPerformed(evt);
+            }
+        });
+
+        newGame.setText("New Game");
+        newGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newGameActionPerformed(evt);
+            }
+        });
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -459,53 +492,92 @@ ImageIcon icon1 = createIcon("bmw.png");
                                     .addComponent(b29)
                                     .addGap(18, 18, 18)
                                     .addComponent(b30))))))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(newGame)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                                .addComponent(BtnBaglan))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(16, 16, 16)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TextPort, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                    .addComponent(TextIP))))
+                        .addContainerGap(80, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(b1)
-                    .addComponent(b2)
-                    .addComponent(b3)
-                    .addComponent(b4)
-                    .addComponent(b5)
-                    .addComponent(b6))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b12, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(b11, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(b10)
-                    .addComponent(b9)
-                    .addComponent(b8)
-                    .addComponent(b7))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b17)
-                    .addComponent(b14)
-                    .addComponent(b13)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(b18)
-                        .addComponent(b16)
-                        .addComponent(b15)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(b21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(b23)
-                        .addComponent(b24)
-                        .addComponent(b22)
-                        .addComponent(b20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(b19))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b25)
-                    .addComponent(b26)
-                    .addComponent(b27)
-                    .addComponent(b28)
-                    .addComponent(b29)
-                    .addComponent(b30))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(TextPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BtnBaglan)
+                            .addComponent(newGame))
+                        .addGap(25, 25, 25)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(b1)
+                            .addComponent(b2)
+                            .addComponent(b3)
+                            .addComponent(b4)
+                            .addComponent(b5)
+                            .addComponent(b6))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(b12, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(b11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(b10)
+                            .addComponent(b9)
+                            .addComponent(b8)
+                            .addComponent(b7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(b17)
+                            .addComponent(b14)
+                            .addComponent(b13)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(b18)
+                                .addComponent(b16)
+                                .addComponent(b15)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(b21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(b23)
+                                .addComponent(b24)
+                                .addComponent(b22)
+                                .addComponent(b20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(b19))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(b25)
+                            .addComponent(b26)
+                            .addComponent(b27)
+                            .addComponent(b28)
+                            .addComponent(b29)
+                            .addComponent(b30))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(b36)
@@ -514,7 +586,7 @@ ImageIcon icon1 = createIcon("bmw.png");
                     .addComponent(b33)
                     .addComponent(b32)
                     .addComponent(b31))
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -522,595 +594,323 @@ ImageIcon icon1 = createIcon("bmw.png");
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-     
+
     private void b1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b1ActionPerformed
         // TODO add your handling code here:
-       JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-       b1.setIcon(icon3);
-       for (int i = 0; i < 1; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
-       
+        //hangi buton basildigini servere gondermek icin
+            c.sendMessage("b1");
+           
+        
+
+
     }//GEN-LAST:event_b1ActionPerformed
 
     private void b2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b2ActionPerformed
+       
+            c.sendMessage("b2");
+           
         // TODO add your handling code here:
-         JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 1; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+
+
     }//GEN-LAST:event_b2ActionPerformed
 
     private void b8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b8ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b8");
+         
+
     }//GEN-LAST:event_b8ActionPerformed
 
     private void b32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b32ActionPerformed
         // TODO add your handling code here:
-       
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 6; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
-
         
+            c.sendMessage("b32");
+        
+
     }//GEN-LAST:event_b32ActionPerformed
 
     private void b7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b7ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 0; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b7");
+            JOptionPane.showMessageDialog(jPanel2, myTurn);
+        
     }//GEN-LAST:event_b7ActionPerformed
 
     private void b9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b9ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b9");
+           
     }//GEN-LAST:event_b9ActionPerformed
 
     private void b10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b10ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b10");
+         
     }//GEN-LAST:event_b10ActionPerformed
 
     private void b11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b11ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+                   c.sendMessage("b11");
+       
+
     }//GEN-LAST:event_b11ActionPerformed
 
     private void b12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b12ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 2; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b12");
+           
+
     }//GEN-LAST:event_b12ActionPerformed
 
     private void b13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b13ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 0; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+      
+            c.sendMessage("b13");
+        
+       
+
     }//GEN-LAST:event_b13ActionPerformed
 
     private void b3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 1; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b3");
+           
     }//GEN-LAST:event_b3ActionPerformed
 
     private void b4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b4ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 1; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b4");
+            
+
     }//GEN-LAST:event_b4ActionPerformed
 
     private void b5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b5ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 1; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b5");
+            
+
     }//GEN-LAST:event_b5ActionPerformed
 
     private void b6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b6ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 1; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b6");
+            
+
     }//GEN-LAST:event_b6ActionPerformed
 
     private void b14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b14ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b14");
+            
+
     }//GEN-LAST:event_b14ActionPerformed
 
     private void b15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b15ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b15");
+           
+
     }//GEN-LAST:event_b15ActionPerformed
 
     private void b16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b16ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b16");
+           
     }//GEN-LAST:event_b16ActionPerformed
 
     private void b17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b17ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b17");
+           
     }//GEN-LAST:event_b17ActionPerformed
 
     private void b18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b18ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 3; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b18");
+           
     }//GEN-LAST:event_b18ActionPerformed
 
     private void b19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b19ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 0; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+      
+            c.sendMessage("b19");
+          
     }//GEN-LAST:event_b19ActionPerformed
 
     private void b20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b20ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b20");
+       
     }//GEN-LAST:event_b20ActionPerformed
 
     private void b21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b21ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b21");
+            
     }//GEN-LAST:event_b21ActionPerformed
 
     private void b22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b22ActionPerformed
-        // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+//        // TODO add your handling code here:
+        
+            c.sendMessage("b22");
+            
+
     }//GEN-LAST:event_b22ActionPerformed
 
     private void b23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b23ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b23");
+           
     }//GEN-LAST:event_b23ActionPerformed
 
     private void b24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b24ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 4; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b24");
+           
+
     }//GEN-LAST:event_b24ActionPerformed
 
     private void b25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b25ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 0; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b25");
+           
+
     }//GEN-LAST:event_b25ActionPerformed
 
     private void b26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b26ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 1; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b26");
+           
     }//GEN-LAST:event_b26ActionPerformed
 
     private void b27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b27ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b27");
+            
     }//GEN-LAST:event_b27ActionPerformed
 
     private void b28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b28ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b28");
+           
+
     }//GEN-LAST:event_b28ActionPerformed
 
     private void b29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b29ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b29");
+            
+
     }//GEN-LAST:event_b29ActionPerformed
 
     private void b30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b30ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 5; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b30");
+            
+
     }//GEN-LAST:event_b30ActionPerformed
 
     private void b31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b31ActionPerformed
         // TODO add your handling code here:
         
-        System.out.println("you lose");    
-        
+            c.sendMessage("you lose");
+           
+
     }//GEN-LAST:event_b31ActionPerformed
 
     private void b33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b33ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b36,b35,b34}};
-        for (int i = 0; i < 6; i++) {
-           for (int j = 2; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b33");
+           
+
     }//GEN-LAST:event_b33ActionPerformed
 
     private void b34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b34ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b34,b35,b36}};
-        for (int i = 0; i < 6; i++) {
-           for (int j = 3; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+        
+            c.sendMessage("b34");
+            
+       
+
     }//GEN-LAST:event_b34ActionPerformed
 
     private void b35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b35ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b24,b23},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b34,b35,b36}};
-        for (int i = 0; i < 6; i++) {
-           for (int j = 4; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b35");
+            
+
     }//GEN-LAST:event_b35ActionPerformed
 
     private void b36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b36ActionPerformed
         // TODO add your handling code here:
-        JButton  a1[][] = {{b1,b2,b3,b4,b5,b6},
-                                {b7,b8,b9,b10,b11,b12},
-                                {b13,b14,b15,b16,b17,b18},
-                                {b19,b20,b21,b22,b23,b24},
-                                {b25,b26,b27,b28,b29,b30},
-                                {b31,b32,b33,b34,b35,b36}};
-        for (int i = 0; i < 6; i++) {
-           for (int j = 5; j < 6; j++) {
-               
-                a1[i][j].setIcon(icon3);
-            }
-        }
+       
+            c.sendMessage("b36");
+          
+
     }//GEN-LAST:event_b36ActionPerformed
+
+    private void BtnBaglanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBaglanActionPerformed
+        // TODO add your handling code here:
+        c = new Client(TextIP.getText().toString(), Integer.parseInt(TextPort.getText().toString()), "Yerkebulan");
+        c.start();
+    }//GEN-LAST:event_BtnBaglanActionPerformed
+
+    private void newGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameActionPerformed
+        // TODO add your handling code here:
+        c.sendMessage("new game");
+
+    }//GEN-LAST:event_newGameActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-  
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1137,52 +937,59 @@ ImageIcon icon1 = createIcon("bmw.png");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               
+
                 new NewJFrame().setVisible(true);
+
             }
         });
     }
-    
-     
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b1;
-    private javax.swing.JButton b10;
-    private javax.swing.JButton b11;
-    private javax.swing.JButton b12;
-    private javax.swing.JButton b13;
-    private javax.swing.JButton b14;
-    private javax.swing.JButton b15;
-    private javax.swing.JButton b16;
-    private javax.swing.JButton b17;
-    private javax.swing.JButton b18;
-    private javax.swing.JButton b19;
-    private javax.swing.JButton b2;
-    private javax.swing.JButton b20;
-    private javax.swing.JButton b21;
-    private javax.swing.JButton b22;
-    private javax.swing.JButton b23;
-    private javax.swing.JButton b24;
-    private javax.swing.JButton b25;
-    private javax.swing.JButton b26;
-    private javax.swing.JButton b27;
-    private javax.swing.JButton b28;
-    private javax.swing.JButton b29;
-    private javax.swing.JButton b3;
-    private javax.swing.JButton b30;
-    private javax.swing.JButton b31;
-    private javax.swing.JButton b32;
-    private javax.swing.JButton b33;
-    private javax.swing.JButton b34;
-    private javax.swing.JButton b35;
-    private javax.swing.JButton b36;
-    private javax.swing.JButton b4;
-    private javax.swing.JButton b5;
-    private javax.swing.JButton b6;
-    private javax.swing.JButton b7;
-    private javax.swing.JButton b8;
-    private javax.swing.JButton b9;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton BtnBaglan;
+    private javax.swing.JTextField TextIP;
+    private javax.swing.JTextField TextPort;
+    static javax.swing.JButton b1;
+    static javax.swing.JButton b10;
+    static javax.swing.JButton b11;
+    static javax.swing.JButton b12;
+    static javax.swing.JButton b13;
+    static javax.swing.JButton b14;
+    static javax.swing.JButton b15;
+    static javax.swing.JButton b16;
+    static javax.swing.JButton b17;
+    static javax.swing.JButton b18;
+    static javax.swing.JButton b19;
+    static javax.swing.JButton b2;
+    static javax.swing.JButton b20;
+    static javax.swing.JButton b21;
+    static javax.swing.JButton b22;
+    static javax.swing.JButton b23;
+    static javax.swing.JButton b24;
+    static javax.swing.JButton b25;
+    static javax.swing.JButton b26;
+    static javax.swing.JButton b27;
+    static javax.swing.JButton b28;
+    static javax.swing.JButton b29;
+    static javax.swing.JButton b3;
+    static javax.swing.JButton b30;
+    static javax.swing.JButton b31;
+    static javax.swing.JButton b32;
+    static javax.swing.JButton b33;
+    static javax.swing.JButton b34;
+    static javax.swing.JButton b35;
+    static javax.swing.JButton b36;
+    static javax.swing.JButton b4;
+    static javax.swing.JButton b5;
+    static javax.swing.JButton b6;
+    static javax.swing.JButton b7;
+    static javax.swing.JButton b8;
+    static javax.swing.JButton b9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    static javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    static javax.swing.JTextField jTextField1;
+    static javax.swing.JButton newGame;
     // End of variables declaration//GEN-END:variables
 }
